@@ -1,0 +1,132 @@
+
+BEGIN TRANSACTION;
+CREATE TABLE user(
+userID INTEGER PRIMARY KEY AUTOINCREMENT, 
+email VARCHAR(300) NOT NULL,
+name VARCHAR(100) NOT NUll, location text null, dateOfBrith DATE null,
+CONSTRAINT ck_user UNIQUE (email,name)
+);
+INSERT INTO user VALUES(1,'Kariznoviarash@gmail.com','Arash Kariznovi','Mashhad','1999-06-28');
+INSERT INTO user VALUES(2,'Kariznovi@gmail.com','Soroush Kariznovi','Tehran','1989-05-18');
+INSERT INTO user VALUES(3,'Kazemi@gmail.com','Farhad Kazemi','Tehran','1949-03-08');
+INSERT INTO user VALUES(4,'SusanKa@gmail.com','Susan Kazemi','Shiraz','1954-02-05');
+INSERT INTO user VALUES(5,'Aliazdeh1995@gmail.com','Reza Alizadeh','Tabriz','1995-10-22');
+INSERT INTO user VALUES(6,'EliMiri1@yahoo.com','Elham Miri','Tabriz','2001-04-29');
+INSERT INTO user VALUES(7,'Riahi@yahoo.com','Sogand Riahi','Esfehan','2005-04-02');
+INSERT INTO user VALUES(8,'Hadi1998@yahoo.com','HadiAssi','Emirates','1998-09-09');
+INSERT INTO user VALUES(9,'Nora2003@gmail.com','Nora','Amesterdam','2003-12-07');
+INSERT INTO user VALUES(10,'AshkanKariznovi@gmail.com','Ashkan','Newyork','1999-10-02');
+CREATE TABLE goal (
+goalID INTEGER PRIMARY KEY AUTOINCREMENT, 
+description TEXT NOT NULL,
+userID INT NOT NULL,
+arrivalDate DATE NULL,
+CONSTRAINT ck_goal UNIQUE (description),
+CONSTRAINT fk_user FOREIGN KEY (userID) REFERENCES user (userID)
+);
+INSERT INTO goal VALUES(1,'IELTS 8',1,'2021-06-15');
+INSERT INTO goal VALUES(2,'apply',2,'2022-07-10');
+INSERT INTO goal VALUES(3,'gym',4,'2021-01-01');
+INSERT INTO goal VALUES(4,'machinelearning',10,'2024-02-01');
+INSERT INTO goal VALUES(6,'ACM',1,'2021-03-11');
+INSERT INTO goal VALUES(7,'bioinformaticts',1,'2021-03-11');
+INSERT INTO goal VALUES(8,'TeachingAssistant',4,'2022-11-29');
+INSERT INTO goal VALUES(9,'personalwebsite',1,'2020-10-05');
+INSERT INTO goal VALUES(10,'visa',2,'2025-11-11');
+INSERT INTO goal VALUES(11,'militaryservice',1,'2025-12-08');
+CREATE TABLE customer(
+customerID INTEGER PRIMARY KEY AUTOINCREMENT,
+customerName VARCHAR(255) NOT NULL, type VARCHAR(100) NULL, location VARCHAR(255) NULL,
+CONSTRAINT ck_customer UNIQUE (customerName)
+);
+INSERT INTO customer VALUES(1,'PartSoftwareGroup','private','Mashhad');
+INSERT INTO customer VALUES(2,'Ali Jafari','private','Mashhad');
+INSERT INTO customer VALUES(3,'Post Company','governmental','Mashhad');
+INSERT INTO customer VALUES(4,'Snapp','private','Mashhad');
+INSERT INTO customer VALUES(5,'Job Ministry','governmental','Tehran');
+INSERT INTO customer VALUES(6,'CafeBazaar','private','Tehran');
+INSERT INTO customer VALUES(7,'Financial Company','private','Shiraz');
+INSERT INTO customer VALUES(8,'Reza Bahrami','personal','Tabriz');
+INSERT INTO customer VALUES(9,'Iron Company','private','Ahvaz');
+INSERT INTO customer VALUES(10,'Tapsi','private','Ahvaz');
+CREATE TABLE project(
+   pID INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(100) NOT NULL,
+    startDate DATE NULL,
+    expenses INTEGER NULL,
+    customerID INTEGER NOT NULL, duration INTEGER NULL,
+    CONSTRAINT ck_project UNIQUE (name),
+    CONSTRAINT fk_customer FOREIGN KEY (customerID) REFERENCES customer (customerID)
+    );
+INSERT INTO project VALUES(1,'Api','2020-12-12',300,1,90);
+INSERT INTO project VALUES(2,'UI','2022-10-12',500,2,120);
+INSERT INTO project VALUES(3,'Authorization Form','2019-10-1',200,1,30);
+INSERT INTO project VALUES(4,'Tizer','2018-03-13',2000,1,60);
+INSERT INTO project VALUES(5,'Employing App','2020-04-10',1000,5,100);
+INSERT INTO project VALUES(6,'Management System','2023-07-05',1500,5,365);
+INSERT INTO project VALUES(7,'Map System','2024-03-03',10,10,200);
+INSERT INTO project VALUES(8,'UI/UX project','2020-12-05',30,6,150);
+INSERT INTO project VALUES(9,'Selling App','2019-10-01',40,7,90);
+INSERT INTO project VALUES(10,'Static Website','2011-11-11',2,8,30);
+CREATE TABLE do(
+pID INTEGER NOT NULL,
+userID INTEGER NOT NULL, 
+PRIMARY KEY (pID,userID),
+CONSTRAINT fk_project FOREIGN KEY (pID) REFERENCES project (pID),
+CONSTRAINT fk_user FOREIGN KEY (userID) REFERENCES project (userID)
+);
+INSERT INTO "do" VALUES(1,1);
+INSERT INTO "do" VALUES(2,2);
+INSERT INTO "do" VALUES(1,3);
+INSERT INTO "do" VALUES(1,4);
+INSERT INTO "do" VALUES(10,1);
+INSERT INTO "do" VALUES(9,1);
+INSERT INTO "do" VALUES(8,10);
+INSERT INTO "do" VALUES(7,10);
+INSERT INTO "do" VALUES(6,9);
+INSERT INTO "do" VALUES(5,9);
+INSERT INTO "do" VALUES(4,8);
+INSERT INTO "do" VALUES(3,7);
+INSERT INTO "do" VALUES(2,5);
+CREATE TABLE salary(
+salaryID INTEGER PRIMARY KEY AUTOINCREMENT ,
+currency VARCHAR(100) NULL,
+paymentMethod VARCHAR(100) NULL,
+amount INTEGER NOT NULL,
+CONSTRAINT ck_salary UNIQUE (amount)
+);
+INSERT INTO salary VALUES(1,'Dollar','Bitcoin',600);
+INSERT INTO salary VALUES(2,'dollar','cash',2000);
+INSERT INTO salary VALUES(3,'dollar','credit card',1000);
+INSERT INTO salary VALUES(4,'millionToman','credit card',30);
+INSERT INTO salary VALUES(5,'millionToman','cash',10);
+INSERT INTO salary VALUES(6,'bitcoin','blockchain',2);
+INSERT INTO salary VALUES(7,'Rial','cash',1500);
+INSERT INTO salary VALUES(8,'Ripple','blockchain',3);
+INSERT INTO salary VALUES(9,'Ripple','blockchain',300);
+INSERT INTO salary VALUES(10,'EURO','credit card',4000);
+CREATE TABLE projectSalary(
+pID INTEGER NOT NULL,
+salaryID INTEGER NOT NULL,
+PRIMARY KEY (pID, salaryID),
+CONSTRAINT fk_project FOREIGN KEY (pID) REFERENCES project (pID),
+CONSTRAINT fk_salary FOREIGN KEY (salaryID) REFERENCES salary (salaryID)
+);
+INSERT INTO projectSalary VALUES(1,1);
+INSERT INTO projectSalary VALUES(2,2);
+INSERT INTO projectSalary VALUES(3,3);
+INSERT INTO projectSalary VALUES(4,4);
+INSERT INTO projectSalary VALUES(5,5);
+INSERT INTO projectSalary VALUES(6,6);
+INSERT INTO projectSalary VALUES(7,7);
+INSERT INTO projectSalary VALUES(8,8);
+INSERT INTO projectSalary VALUES(9,8);
+INSERT INTO projectSalary VALUES(10,8);
+DELETE FROM sqlite_sequence;
+INSERT INTO sqlite_sequence VALUES('customer',10);
+INSERT INTO sqlite_sequence VALUES('project',10);
+INSERT INTO sqlite_sequence VALUES('user',10);
+INSERT INTO sqlite_sequence VALUES('goal',11);
+INSERT INTO sqlite_sequence VALUES('salary',10);
+COMMIT;
+
